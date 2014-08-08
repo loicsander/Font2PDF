@@ -44,11 +44,11 @@ Here are the variables you might wanna change:
 On each page, the script will also set the name of the typeface and the current style, as well as the full name of the .ufo file and a timestamp.
 
 #### PDF Output
-By Default, the script exports a PDF file of the same filename as the .ufo file. Optionaly, you can define a folder to store the PDF in, relatively to the .ufo’s path (change PDFfolder, ex: PDFfolder= '/PDF/'). The folder has to be there, the script won’t create it for you.
+By default, the script exports a PDF file of the same filename as the .ufo file. Optionaly, you can define a folder to store the PDF in, relatively to the .ufo’s path (change PDFfolder, ex: PDFfolder= '/PDF/'). The folder has to be there, the script won’t create it for you.
 
 ### compare-glyphs.py
 
-This script takes in all given fonts (either a list of paths in DrawBot or takes all open fonts in Robofont) and makes a PDF file showing each glyph for all fonts side by side. It is akin to Ondrej Jób’s great [Font Inspector](http://urtd.net/projects/fontinspector/), only the output isn’t HTML but PDF and it’s not interactive. 
+This script takes in all given fonts (either a list of paths to UFO files in DrawBot or takes all open fonts in Robofont) and makes a PDF file showing each glyph for all fonts side by side. It does a similar job to Ondrej Jób’s great [Font Inspector](http://urtd.net/projects/fontinspector/), only the output isn’t HTML but PDF and it’s not interactive. 
 
 It takes it’s character set reference from the first font it can find. Typically, this is intended for master comparison in an interpolation scheme. Let’s say it’s the use case in which you’ll have no surprises (same family name & same number of characters in all fonts).
 
