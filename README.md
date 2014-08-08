@@ -10,17 +10,6 @@ Here’s a series of scripts that allow you to generate PDF files directly from 
 
 As the name indicates, this script is meant to produce proofing sheets. There’s a handful of parameters which can produce the following results (but not limited to):
 
-<<<<<<< HEAD
-+ **Print of listed glyphs:**
-You provide a list, or lists (glyphNameSets) of glyphs. To have the script use the lists as reference, you must set useString to False. 
-![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-1.png)
-
-+ **Print of mixed listed glyphs:**
-In this case, the script still takes lists as reference but mixes all glyphs of all lists together recursively. Typically, this is meant to produce a spacing proof.
-![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-3.png)
-
-+ **Print of a string:**
-=======
 + **Print of listed glyphs**
 You provide a list, or lists (glyphNameSets) of glyphs. To have the script use the lists as reference, you must set useString to False. 
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-1.png)
@@ -30,7 +19,6 @@ In this case, the script still takes lists as reference but mixes all glyphs of 
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-3.png)
 
 + **Print of a string**
->>>>>>> FETCH_HEAD
 If useString is set to True, the script gets the glyphs to set from a string you provide (textToSet). 
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-2.png)
 
@@ -39,11 +27,11 @@ Basically, the script only sets type based on provided glyph names, so you it’
 #### Variables
 Here are the variables you might wanna change:
 (point units)
-+ pageWidth
-+ pageHeight
-+ margin
-+ pointSize
-+ lineHeight
++ **pageWidth**
++ **pageHeight**
++ **margin**
++ **pointSize**
++ **lineHeight**
 
 (booleans)
 + **mix**: script makes lines of each glyph interwoven with all other glyphs in all lists. Therefore, you should be mindful of the size of your lists, or you’re in for a long wait.
