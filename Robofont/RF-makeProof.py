@@ -187,7 +187,9 @@ for i, glyphName in enumerate(glyphSet):
     #fill(0)
     if showKerning:
         cmykFill(*kerningColor)
+        fontSize(75)
         rect(0, descender, -kerningValue/sc, UPM)
+        textBox(str(int(kerningValue/sc)), (-100 - (kerningValue/sc*0.5), ascender+50, 200, 100), 'center')
     cmykFill(0, 0, 0, 1)
     glyphStart = time()
     glyph = f[glyphName]
