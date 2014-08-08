@@ -18,7 +18,7 @@ showFrame = True
 showCell = True
 infoFontName = ''
 
-fontKeys = aFont.keys()
+fontKeys = thisFont.keys()
 #fontKeys = ['a','b','c']
 
 frameBackgroundColor = (.1, .3, .5, 0)
