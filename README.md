@@ -22,7 +22,7 @@ In this case, the script still takes lists as reference but mixes all glyphs of 
 If useString is set to True, the script gets the glyphs to set from a string you provide (textToSet). 
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-2.png)
 
-Basically, the script only sets type based on provided glyph names, so you it’s not limited to the use cases described here. Note, there’s obviously no word break support, this is not meant to be a proper typesetting substitute.
+Basically, the script only sets type based on provided glyph names, so it’s not limited to the use cases described here. Note, there’s obviously no word break support, this is not meant to be a proper typesetting substitute.
 
 #### Variables
 Here are the variables you might wanna change:
