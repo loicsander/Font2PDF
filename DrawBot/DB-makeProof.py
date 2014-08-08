@@ -192,7 +192,7 @@ for i, glyphName in enumerate(glyphSet):
     #fill(0)
     if showKerning:
         cmykFill(*kerningColor)
-        rect(0, -100, kerningValue/sc, 1100)
+        rect(0, -100, -kerningValue/sc, 1100)
     cmykFill(0, 0, 0, 1)
     glyphStart = time()
     glyph = f[glyphName]
