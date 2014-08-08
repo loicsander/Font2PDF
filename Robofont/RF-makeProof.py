@@ -12,14 +12,14 @@ def _drawGlyph(glyph):
 
 def pagestamp():
     save()
-    font('GemeliMono-Light')
+    font('')
     fontSize(7)
     fill(0)
     translate(bounds[3], 20)
-    tbwidth = (bounds[1])/3
-    textBox(fontName, (0, 0, tbwidth, 10))
-    textBox(fileName, (tbwidth, 0, tbwidth, 10), 'center')
-    textBox(now, (2*tbwidth, 0, tbwidth, 10), 'right')    
+    tbwidth = (bounds[1])/6
+    textBox(fontName, (0, 0, 2*tbwidth, 10))
+    textBox(fileName, (2*tbwidth, 0, 3*tbwidth, 10), 'left')
+    textBox(now, (5*tbwidth, 0, tbwidth, 10), 'right')    
     restore()
             
 ### ACTUAL SCRIPT START
@@ -47,7 +47,7 @@ pageHeight = 841.89
 PDFfolder = ''
 
 margin = 40
-pointSize = 72
+pointSize = 12
 lineHeight = 1.4
 sc = pointSize/UPM
 # bounds = top right bottom left
@@ -56,7 +56,7 @@ bounds = (pageHeight-(2*margin)-UPM*sc, pageWidth-(2*margin), margin, margin)
 # This variable results in a interweaving of all glyphs in all sets, so be careful!
 # If you have sizeable lists this may impact the execution time of the script.
 # For instance, mixing a-z, A-Z and 0-9 takes approximately 5 seconds.
-mix = False
+mix = True
 ##
 useString = False
 oneSetByPage = False
@@ -64,7 +64,7 @@ useKerning = True
 showKerning = False
 kerningColor = (0, 1, 1, 0, .5)
 
-textToSet = u'Tétine Tool ATAVISME ce que je veux'
+textToSet = u'whatever'
 
 glyphNameSets = [
 ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'ae', 'oe', 'eth', 'thorn'],    ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AE', 'OE', 'Eth', 'Thorn'],

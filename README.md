@@ -3,7 +3,7 @@
 *DISCLAIMER*
 *Robofont versions of these scripts will only work in Robofont v1.6, currently in beta, If you’re not on the beta, use [DrawBot](http://drawbot.readthedocs.org/en/latest/content/download.html)*
 
-Here’s a series of scripts that allow you to generate PDF files directly from a UFO file, that is, either an open font inside of Robofont, or a .ufo you load in DrawBot.
+Here’s a series of scripts that will allow you to generate PDF files directly from a UFO file, that is, either an open font inside of Robofont, or a .ufo you load in DrawBot.
 
 
 ### makeProof.py
