@@ -30,8 +30,9 @@ For each defined string, you must also define a boolean in the form of a tuple �
 Working with strings makes it easy to import text, which you can do through a separate text file.
 
 #### Lists
-If you work with lists (which will allow you to use specific glyph names), the same happens. Each item of the list is set on a separate page, except is the mix variable is set to True. In that case, all lists are mixed to produce a typical spacing sheet (abacadaeafaga…) 
+If you work with lists (which will allow you to use specific glyph names), the same happens. Each item of the list is set on a separate page, except if the mix variable is set to True. In that case, all lists are mixed to produce a typical spacing sheet (abacadaeafaga…) . You should be mindful of the size and number of your lists if you intend to mix them; otherwise it could take a little while…
 
+![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-9.png)
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-4.png)
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-5.png)
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-6.png)
@@ -40,7 +41,7 @@ If you work with lists (which will allow you to use specific glyph names), the s
 
 #### Options
 
-Independently from the input method you choose, there’s a bunch of parameters you can define. They’re all gathered at the top of the script for convenience.
+Independently of the input method you choose, there’s a bunch of parameters you can define. They’re all gathered at the top of the script for convenience.
 
 ##### Page definition
 ```python
@@ -49,13 +50,13 @@ preset = 'A4-P'
 showFrame = False
 footer = True
 ```
-There are presets to defined size and orientation. By default, I added A4 & A3 as base formats, but you can add any you wish yourself (see .formats in the TypeSetter class). For each format, you can chose between portrait or landscape orientation (A4-P or A4-L). You also have control over the size of margins and if you want a footer applied to the pages (it displays the name of the typeface + style, name of the ufo file and date.
+There are presets to defined size and orientation of the page. By default, I added A4 & A3 as base formats, but you can add yours yourself (see .formats in the TypeSetter class). For each format, you can chose between portrait or landscape orientation (A4-P or A4-L). You also have control over the size of margins and if you want a footer applied to the pages (displaying the name of the typeface + style, name of the ufo file and date.
 
 ##### Page output
 ```python
-PDF = False
-PDFfolder = None
-PDFfileName = None
+PDF = True
+PDFfolder = '/myFolder/'
+PDFfileName = 'myFile'
 ```
 If you set the PDF variable to True, the script issues a PDF file with a name identical to the source ufo file,  and a _PROOF suffix. Except if you specify the filename you wish. You can also specify a target folder which by default is the same as the ufo.
 
@@ -88,7 +89,7 @@ These variable names are quite straightforward I think. showGlyphBox displays th
 ```python
 infoFont = ''
 ```
-Here you can define the name of a font for the footer information. The name has to be a postscript name, you can get the full list of installed fonts (it show you the name you have to use so that DrawBot can read them) with the installedFonts() function of DrawBot.
+Here you can define the name of a font for the footer information. The name has to be a postscript name, you can get the full list of installed fonts with the installedFonts() function of DrawBot (it provides you with the names you have to use so that DrawBot use the proper font).
 
 ### compare-glyphs.py
 
