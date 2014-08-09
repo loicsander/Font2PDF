@@ -29,6 +29,12 @@ If you provide strings (even if only one), you should put them in a list. Each i
 For each defined string, you must also define a boolean in the form of a tuple —> ('abc123', True). This boolean determines if words are to be wrapped or if text is broken in lines anywhere (not respect for words).
 Working with strings makes it easy to import text, which you can do through a separate text file.
 
+if strings or lists are used is determined by:
+
+```python
+useString = True # or False
+```
+
 #### Lists
 If you work with lists (which will allow you to use specific glyph names), the same happens. Each item of the list is set on a separate page, except if the mix variable is set to True. In that case, all lists are mixed to produce a typical spacing sheet (abacadaeafaga…) . You should be mindful of the size and number of your lists if you intend to mix them; otherwise it could take a little while…
 
