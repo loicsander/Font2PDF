@@ -8,43 +8,87 @@ Here’s a series of scripts that will allow you to generate PDF files directly 
 
 ### makeProof.py
 
-As the name indicates, this script is meant to produce proofing sheets. There’s a handful of parameters which can produce the following results (but not limited to):
+As the name indicates, this script is meant to produce proofing sheets. You can feed text, or glyphs, to the script by two means. Either you provide strings (text), or lists of glyphs.
 
-+ **Print of listed glyphs**:
-You provide a list, or lists (glyphNameSets) of glyphs. To have the script use the lists as reference, you must set useString to False. 
-![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-1.png)
+```python
+# strings
+useString = True
+text2print = [
+	(open('foo.txt').read(), True),
+	('Tart Tool\nATAVISME\nWhatever', True),
+    ]
+ 
+# glyph lists
+mix = True   
+glyphLists = [
+	['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],    ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+```
 
-+ **Print of mixed listed glyphs**:
-In this case, the script still takes lists as reference but mixes all glyphs of all lists together recursively. Typically, this is meant to produce a spacing proof.
-![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-3.png)
+#### Strings
+If you provide strings (even if only one), you should put them in a list. Each item in the list is an indication that you want this text set on a separate page.
+For each defined string, you must also define a boolean in the form of a tuple —> ('abc123', True). This boolean determines if words are to be wrapped or if text is broken in lines anywhere (not respect for words).
+Working with strings makes it easy to import text, which you can do through a separate text file.
 
-+ **Print of a string**:
-If useString is set to True, the script gets the glyphs to set from a string you provide (textToSet). 
-![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-2.png)
+#### Lists
+If you work with lists (which will allow you to use specific glyph names), the same happens. Each item of the list is set on a separate page, except is the mix variable is set to True. In that case, all lists are mixed to produce a typical spacing sheet (abacadaeafaga…) 
 
-Basically, the script only sets type based on provided glyph names, so it’s not limited to the use cases described here. Note, there’s obviously no word break support, this is not meant to be a proper typesetting substitute.
+![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-4.png)
+![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-5.png)
+![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-6.png)
+![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-7.png)
+![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-8.png)
 
-#### Variables
-Here are the variables you might wanna change:
-(point units)
-+ **pageWidth**
-+ **pageHeight**
-+ **margin**
-+ **pointSize**
-+ **lineHeight**
+#### Options
 
-(booleans)
-+ **mix**: script makes lines of each glyph interwoven with all other glyphs in all lists. Therefore, you should be mindful of the size of your lists, or you’re in for a long wait.
-+ **oneSetByPage**: sets all glyphs in a list (or mixed list) and sets next list on a new page.
-+ **useKerning**
-+ **showKerning**: visual display of kerning values
-+ **kerningColor**: color of said visual display of kerning values (FIY: CMYK)
+Independently from the input method you choose, there’s a bunch of parameters you can define. They’re all gathered at the top of the script for convenience.
 
-#### Infos
-On each page, the script will also set the name of the typeface and the current style, as well as the full name of the .ufo file and a timestamp.
+##### Page definition
+```python
+margins = (50, 50, 50, 50)
+preset = 'A4-P'
+showFrame = False
+footer = True
+```
+There are presets to defined size and orientation. By default, I added A4 & A3 as base formats, but you can add any you wish yourself (see .formats in the TypeSetter class). For each format, you can chose between portrait or landscape orientation (A4-P or A4-L). You also have control over the size of margins and if you want a footer applied to the pages (it displays the name of the typeface + style, name of the ufo file and date.
 
-#### PDF Output
-By default, the script exports a PDF file of the same filename as the .ufo file. Optionaly, you can define a folder to store the PDF in, relatively to the .ufo’s path (change PDFfolder, ex: PDFfolder= '/PDF/'). The folder has to be there, the script won’t create it for you.
+##### Page output
+```python
+PDF = False
+PDFfolder = None
+PDFfileName = None
+```
+If you set the PDF variable to True, the script issues a PDF file with a name identical to the source ufo file,  and a _PROOF suffix. Except if you specify the filename you wish. You can also specify a target folder which by default is the same as the ufo.
+
+##### Type
+```python
+pointSize = 96
+_line_Height = 1.3
+tracking = 0
+color = (0, 0, 0, 1)
+alpha = 1
+```
+
+NB: depending on how you input color, it will be RGB or CMYK (3 or 4 parameters). You can define alpha transparency separately, which results in a revealing of the outline (the script adds stroke to the outline automatically if alpha transparency is < 1.
+
+##### Features
+```python
+suffix = []
+```
+You can define suffixes for substitution of glyphs (.small, .alt, etc.)
+
+```python
+useKerning = True
+showKerning = True
+showGlyphBox = False
+```
+
+These variable names are quite straightforward I think. showGlyphBox displays the bounding box of glyphs as well as their vertical metrics.
+
+##### Misc
+```python
+infoFont = ''
+```
+Here you can define the name of a font for the footer information. The name has to be a postscript name, you can get the full list of installed fonts (it show you the name you have to use so that DrawBot can read them) with the installedFonts() function of DrawBot.
 
 ### compare-glyphs.py
 
