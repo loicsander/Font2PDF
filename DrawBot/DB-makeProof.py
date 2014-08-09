@@ -7,8 +7,7 @@ now = datetime.datetime.now().strftime('%d %B %Y - %H:%M')
 
 ### SETTINGS ####
 
-ufoPath = u"/Users/loicsander/Documents/20 Pro Work/20 Commisionned/Brochard-Finance/10 ID/20 Brochard typeface/30 ufo/140212_Brochard-Regular_[smcp]-[cap]-[bdc]Kerned 18.ufo"
-#ufoPath = u"/Users/loicsander/Documents/30 Ego Work/0 Letters/0 Faces/Elzevier/30 ufo/1 text/140322_Elz_Text_X_Book 25.ufo"
+ufoPath = ""
 
 # (left, top, right, bottom)
 margins = (50, 50, 50, 50)
