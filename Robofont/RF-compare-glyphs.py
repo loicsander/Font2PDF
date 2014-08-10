@@ -62,10 +62,13 @@ glyphs = []
 
 for glyphName in thisFont.glyphOrder:
     for aFont in fonts:
-        if glyphName in fontKeys:
+        aFontKeys = aFont.keys()
+        if glyphName in aFontKeys:
             glyphs.append(aFont[glyphName])
-        else:
+        elif '.notdef' in aFontKeys:
             glyphs.append(aFont['.notdef'])
+        else:
+            glyphs.append(aFont['space'])
 
 for i, glyph in enumerate(glyphs): 
 

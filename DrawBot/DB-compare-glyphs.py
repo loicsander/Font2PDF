@@ -61,8 +61,17 @@ innerCellHeight = cellHeight - cellMargins[0] - cellMargins[2]
 
 glyphsPerPage = col * int(innerHeight/(cellHeight))
 
-glyphs = [aFont[glyphName] for glyphName in thisFont.lib.get('public.glyphOrder') for aFont in fonts if glyphName in fontKeys]
-
+glyphs = []
+for glyphName in thisFont.lib.get('public.glyphOrder'):
+    for aFont in fonts:
+        aFontKeys = aFont.keys()
+        if glyphName in aFontKeys:
+            glyphs.append(aFont[glyphName])
+        elif '.notdef' in aFontKeys:
+            glyphs.append(aFont['.notdef'])
+        else:
+            glyphs.append(aFont['space'])
+            
 for i, glyph in enumerate(glyphs):
     
     thisFont = glyph.getParent()
