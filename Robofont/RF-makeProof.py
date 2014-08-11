@@ -183,7 +183,7 @@ class TypeSetter(object):
         return glyphRecord
 
 
-    def set(self, glyphInput, keepWords=None):
+    def set(self, glyphInput, keepWords=False):
         thisFont = self.thisFont
         kerning = self.kerning
         if isinstance(glyphInput, str) or isinstance(glyphInput, unicode):
