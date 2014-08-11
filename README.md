@@ -127,3 +127,9 @@ In DrawBot, the simplest way to get your UFOs in is to drag and drop the bunch o
 
 #### PDF Output
 The PDF file will start with a timestamp (year-month-day —> 140809) and contain the name of the family plus the names of the compared styles.
+
+### charset.py
+
+A simpler variation of compare-glyphs.py that outputs a pdf with all glyphs of a single font. Same options apply (showMetrics, etc.).
+
+![alt tag](http://www.akalollip.com/images/github/font2pdf/charset-1.png)
