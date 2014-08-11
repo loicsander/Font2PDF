@@ -103,7 +103,7 @@ This script takes in all given fonts (either a list of paths to UFO files in Dra
 
 It takes it’s character set reference from the first font it can find. Typically, this is intended for master comparison in an interpolation scheme. Let’s say it’s the use case in which you’ll have no surprises (same family name & same number of characters in all fonts).
 
-The script takes the first found font’s glyphOrder as a reference character set. But you can override it by defining your own list  (see fontKeys variable, line 22/25)
+The script takes the first found font’s glyphOrder as a reference character set. But you can override it by defining your own list  (see userGlyphKeys variable, line 40/36)
 
 #### Page Layout
 

@@ -10,29 +10,44 @@ def _drawGlyph(glyph):
     
 pathsToFonts = []
 
+def getGlyphOrder(fonts):
+    gO_lengths = []
+    gO = []
+    for aFont in fonts:
+        glyphOrder = []
+        if hasattr(aFont, 'glyphOrder'):
+            glyphOrder = aFont.glyphOrder
+        elif aFont.lib.has_key('public.glyphOrder'):
+            glyphOrder = aFont.lib.get('public.glyphOrder')
+        gO.append(glyphOrder)
+        gO_lengths.append(len(glyphOrder))
+    index = gO_lengths.index(max(gO_lengths))
+    return gO[index]
+            
+
 fonts = [OpenFont(ufoPath) for ufoPath in pathsToFonts]
-thisFont = fonts[0]
+glyphOrder = getGlyphOrder(fonts)
 
 pageWidth = 595.276
 pageHeight = 841.89
-showGlyphCell = False
-showMetrics = False
+showMetrics = True
 showName = True
 showFrame = False
 showCell = False
+showGlyphBox = False
 infoFontName = ''
-fontKeys = thisFont.keys()
-#fontKeys = ['a','b','c']
+#userGlyphKeys = ['a','b','c']
+userGlyphKeys = []
 
-frameBackgroundColor = (.1, .3, .5, 0)
-frameBorderColor = (1, 1, 1, 0)
+frameBackgroundColor = (.1, .3, .5, .25)
+frameBorderColor = (0, 0, 0, .75)
 
 glyphFillColor = (0, 0, 0, 1)
 glyphStrokeColor= (0, 0, 0, 0.25)
 glyphStrokeWidth = 0
 
 cellBackgroundColor = (1, 1, 1, 0)
-cellBorderColor = (0, 0, 0, 0)
+cellBorderColor = (0, 0, 0, .5)
 
 glyphNameSize = 8
 glyphNameColor = (0, 0, 0, 1)
@@ -61,18 +76,27 @@ innerCellHeight = cellHeight - cellMargins[0] - cellMargins[2]
 
 glyphsPerPage = col * int(innerHeight/(cellHeight))
 
+#glyphs = [aFont[glyphName] for glyphName in thisFont.lib.get('public.glyphOrder') for aFont in fonts if glyphName in fontKeys]
 glyphs = []
-for glyphName in thisFont.lib.get('public.glyphOrder'):
+
+if len(userGlyphKeys) > 0:
+    glyphOrder = userGlyphKeys
+    
+for glyphName in glyphOrder:
     for aFont in fonts:
+        aFontName = ' '.join([aFont.info.familyName, aFont.info.styleName])
         aFontKeys = aFont.keys()
         if glyphName in aFontKeys:
-            glyphs.append(aFont[glyphName])
+            glyph = aFont[glyphName]
         elif '.notdef' in aFontKeys:
-            glyphs.append(aFont['.notdef'])
+            glyph = aFont['.notdef']
         else:
-            glyphs.append(aFont['space'])
-            
-for i, glyph in enumerate(glyphs):
+            glyph = aFont['space']
+        glyphs.append((aFontName, glyphName, glyph))
+
+for i, glyphTuple in enumerate(glyphs):
+    
+    fontName, glyphName, glyph = glyphTuple
     
     thisFont = glyph.getParent()
     
@@ -90,9 +114,11 @@ for i, glyph in enumerate(glyphs):
         
         if showFrame:
             ## page frame
+            save()
             stroke(*frameBorderColor)
             fill(*frameBackgroundColor)
             rect(margins[3], margins[2], innerWidth, innerHeight)
+            restore()
 
         # defining margins and starting from top of the page
         translate(margins[3], margins[2]+innerHeight)
@@ -121,9 +147,10 @@ for i, glyph in enumerate(glyphs):
     scale(sc)
     translate(0, -descender)
     
-    if showGlyphCell:
+    if showGlyphBox:
         save()
         # bounding box
+        fill()
         stroke(0.75)
         strokeWidth(1)        
         rect(0, descender, glyph.width, UPM)
@@ -167,7 +194,8 @@ for i, glyph in enumerate(glyphs):
         fill(*glyphNameColor)
         font(infoFontName)
         fontSize(glyphNameSize)
-        textBox(glyph.name.upper(), (0, cellMargins[2]+glyphNameSize, cellWidth, glyphNameSize), 'center')
+        textBox(fontName, (0, cellMargins[2]+glyphNameSize, cellWidth, glyphNameSize), 'center')
+        textBox(glyphName.upper(), (0, cellMargins[2]+(2.5*glyphNameSize), cellWidth, glyphNameSize), 'center')
         restore()
 
 faceName = thisFont.info.familyName
