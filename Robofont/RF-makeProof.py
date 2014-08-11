@@ -124,15 +124,15 @@ class TypeSetter(object):
         font(self.settings['infoFont'])
         x, y, width, height = self.canvas['posSize']
         fileName = self.fileInfo()[1]
-        fontName = self.thisFont.info.familyName + ' – ' + self.thisFont.info.styleName
+        fontName = self.thisFont.info.familyName + u' – ' + self.thisFont.info.styleName
         save()
         fontSize(7)
         fill(0)
         translate(x, y/2)
-        column = width/6
+        column = width/7
         textBox(fontName, (0, 0, 2*column, 10))
         textBox(fileName, (2*column, 0, 3*column, 10), 'center')
-        textBox(now, (5*column, 0, column, 10), 'right')
+        textBox(now, (5*column, 0, 2*column, 10), 'right')
         restore()
       
             
@@ -186,6 +186,7 @@ class TypeSetter(object):
     def set(self, glyphInput, keepWords=False):
         thisFont = self.thisFont
         kerning = self.kerning
+        fontKeys = thisFont.keys()
         if isinstance(glyphInput, str) or isinstance(glyphInput, unicode):
             glyphRecord = self.stringToGlyphs(glyphInput)
         elif isinstance(glyphInput, list):
@@ -193,7 +194,6 @@ class TypeSetter(object):
 
         suffixes = self.settings['suffix']
         if len(suffixes) > 0:
-            fontKeys = self.thisFont.keys()
             for i, glyphName in enumerate(glyphRecord):                  
                 for suffix in suffixes:
                     if glyphName + suffix in fontKeys:
@@ -201,7 +201,6 @@ class TypeSetter(object):
             
         kernGroups = self.getKernGroups(glyphRecord)
         nbrOfGlyphs = len(glyphRecord)
-        fontKeys = thisFont.keys()
         UPM = thisFont.info.unitsPerEm
         descender = thisFont.info.descender
         ascender = thisFont.info.ascender
@@ -229,8 +228,7 @@ class TypeSetter(object):
         wordGlyph.name = ''
         glyphDrawingTime = 0
         wordKerning = []
-
-        suffixes = self.settings['suffix']         
+      
         useKerning = self.settings['useKerning'] 
         showKerning = self.settings['showKerning'] 
         showGlyphBox = self.settings['showGlyphBox'] 
