@@ -6,7 +6,7 @@
 Here’s a series of scripts that will allow you to generate PDF files directly from a UFO file, that is, either an open font inside of Robofont, or a .ufo you load in DrawBot.
 
 
-### makeProof.py
+## makeProof.py
 
 As the name indicates, this script is meant to produce proofing sheets. You can feed text, or glyphs, to the script by two means. Either you provide strings (text), or lists of glyphs.
 
@@ -97,7 +97,7 @@ infoFont = ''
 ```
 Here you can define the name of a font for the footer information. The name has to be a postscript name, you can get the full list of installed fonts with the installedFonts() function of DrawBot (it provides you with the names you have to use so that DrawBot use the proper font).
 
-### compare-glyphs.py
+## compare-glyphs.py
 
 This script takes in all given fonts (either a list of paths to UFO files in DrawBot or takes all open fonts in Robofont) and makes a PDF file showing each glyph for all fonts side by side. It does a similar job to Ondrej Jób’s great [Font Inspector](http://urtd.net/projects/fontinspector/), only the output isn’t HTML but PDF and it’s not interactive. 
 
@@ -128,7 +128,7 @@ In DrawBot, the simplest way to get your UFOs in is to drag and drop the bunch o
 #### PDF Output
 The PDF file will start with a timestamp (year-month-day —> 140809) and contain the name of the family plus the names of the compared styles.
 
-### charset.py
+## charset.py
 
 A simpler variation of compare-glyphs.py that outputs a pdf with all glyphs of a single font. Same options apply (showMetrics, etc.).
 
