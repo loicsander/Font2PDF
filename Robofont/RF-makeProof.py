@@ -6,11 +6,33 @@ from time import time
 import datetime
 now = datetime.datetime.now().strftime('%d %B %Y - %H:%M')
 
+_UI = False
+
+
+if _UI:
+    pSizes = ['8','10','12','14','16','18','20','22','24','28','32','36','40','44','48','56','64','72','84','96']
+    trackingValues= [str(v) for v in range(0, 100, 5)]
+    _lineHeightValues = [str(l/100) for l in range(100, 200, 5)]
+    presets = ['A4-P', 'A4-L', 'A3-P', 'A3-L']
+    presetNames = ['A4 Portrait', 'A4 Landscape', 'A3 Portrait', 'A3 Landscape']
+
+    Variable([
+        dict(name="pageSize", ui="PopUpButton", args=dict(items=presetNames)),
+        dict(name="point_size", ui="PopUpButton", args=dict(items=pSizes)),
+        dict(name="_tracking", ui="PopUpButton", args=dict(items=trackingValues)),
+        dict(name="negativeTracking", ui="CheckBox"),
+        dict(name="line_Height", ui="PopUpButton", args=dict(items=_lineHeightValues)),
+        dict(name="useKerning", ui="CheckBox"),
+        dict(name="showKerning", ui="CheckBox"),
+        dict(name="showGlyphBox", ui="CheckBox"),
+        dict(name="GeneratePDF", ui="CheckBox") 
+        ], globals())
+
 ### SETTINGS ####
 
 # (left, top, right, bottom)
 margins = (50, 50, 50, 50)
-preset = 'A4-P' # A4-L, A4-P, A3-L, A3-P
+preset = 'A4-P'
 showFrame = False
 footer = True
 
@@ -18,12 +40,13 @@ footer = True
 # and if PDF is set to True,
 # script issues a PDF next to the font file
 # width the same name and a _PROOF suffix
+
 PDF = False
 PDFfolder = None
 PDFfileName = None
 
-pointSize = 12
-_line_Height = 1.4
+pointSize = 52
+_line_Height = 1.3
 tracking = 0
 
 # use 3 values if you want RVB
@@ -37,33 +60,46 @@ alpha = 1
 # usual suffix stuff: .small, .alt, etc.
 suffix = []
 
-useKerning = True
-showKerning = False
-showGlyphBox = False
+if not _UI:
+    useKerning = True
+    showKerning = False
+    showGlyphBox = False
 
 useString = True
 text2print = [
 #    (text to print, wrapWords:True/False)
 #     (open('foo.txt').read(), True),
-#    ('Bon. Tartuffe, reprenons nos affaires. Où en étions-nous?', True),
-#    ('abcdefghijklm\nnoprstuvwxyz\nABCDEGHIJKLMNOPQRSTUVWXYZ', False),
-     ('Tart Tool\nATAVISME\nWhatever', True)
+     ('Bon. Tartuffe,\n reprenons nos affaires. \nOù en étions-nous/thinspace ?', True),
+#    ('abcdefghijklmnoprstuvwxyz\nABCDEGHIJKLMNOPQRSTUVWXYZ', False),
+#     ('Tart Tool ATAVISME Whatever 123', True)
     ]
 
 # if useString is set to False and mix is set to True
 # script process glyphLists and interweaves all glyphs in all contained lists
 mix = False
 glyphLists = [
-    ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'ae', 'oe', 'eth', 'thorn'],    ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AE', 'OE', 'Eth', 'Thorn'],
-    ['one','two','three','four','five','six','seven','eight','nine'],
-    ['one.LP','two.LP','three.LP','four.LP','five.LP','six.LP','seven.LP','eight.LP','nine.LP']
+    ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', 'ae', 'oe', 'eth', 'thorn'],
+    #['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', 'AE', 'OE', 'Eth', 'Thorn'],
+#    ['one','two','three','four','five','six','seven','eight','nine'],
+    ['period', 'comma', 'semicolon', 'colon']
+    #['one.LP','two.LP','three.LP','four.LP','five.LP','six.LP','seven.LP','eight.LP','nine.LP']
     ]
 
 # font used for the page stamp
 # has to be an installed font
 # has to be name by it’s poscript name
 # use installedFonts() to get the full list of installed fonts on your system
-infoFont = ''
+infoFont = 'GemeliMono-Light'
+
+if _UI:
+    preset = presets[pageSize] # A4-L, A4-P, A3-L, A3-P
+    PDF = GeneratePDF
+    pointSize = int(pSizes[point_size])    
+    _line_Height = float(_lineHeightValues[line_Height])
+    tracking = int(trackingValues[_tracking])
+    if negativeTracking:
+        tracking = -tracking
+
 
 #################
 #################
@@ -71,6 +107,24 @@ infoFont = ''
 def _drawGlyph(glyph):
     path = glyph.naked().getRepresentation("defconAppKit.NSBezierPath")
     drawPath(path)
+    
+def _decompose(glyph):
+    components = glyph.components
+    font = glyph.getParent()
+    decomposedGlyph = RGlyph()
+    
+    if font is not None:
+        for component in components:
+            decomponent = RGlyph()
+            decomponent.appendGlyph(font[component.baseGlyph])
+            decomponent.scale((component.scale[0], component.scale[1]))
+            decomponent.move((component.offset[0], component.offset[1]))
+            decomposedGlyph.appendGlyph(decomponent)
+        for contour in glyph.contours:
+            decomposedGlyph.appendContour(contour)
+        decomposedGlyph.width = glyph.width
+        
+    return decomposedGlyph
 
 class TypeSetter(object):
     
@@ -307,8 +361,8 @@ class TypeSetter(object):
                         restore()
                         
                     if len(glyph.components) > 0:
-                        for component in glyph.components:
-                            component.decompose()
+                        for component in reversed(glyph.components):
+                            component.decompose()               
                     wordGlyph.appendGlyph(glyph, (wordLetterOffset + kerningValue, 0))
                     wordGlyph.width += (glyph.width + tracking + kerningValue)
                     wordGlyph.name += glyphName
@@ -324,6 +378,10 @@ class TypeSetter(object):
                 # check if the word doesn’t exceed boundaries
                 elif (glyphName == 'space') or (glyphName == '\n') or (i == nbrOfGlyphs-1):
                     if (i == nbrOfGlyphs-1) and (glyphName != '\n'):
+                   
+                        if len(glyph.components) > 0:
+                            for component in reversed(glyph.components):
+                                component.decompose()
                         wordGlyph.appendGlyph(glyph, (wordLetterOffset + kerningValue, 0))
                         wordGlyph.width += (glyph.width + tracking)
                         wordGlyph.name += glyphName
@@ -331,6 +389,7 @@ class TypeSetter(object):
                         previousGlyph = glyph
                         previousGlyphGroups = glyphGroups
                     glyph = wordGlyph
+                    
                     wordGlyph = RGlyph()
                     wordGlyph.name = ''
                     wordLetterOffset += tracking + kerningValue
@@ -394,7 +453,10 @@ class TypeSetter(object):
             else:
                 fill(0)
                 if alpha < 1:stroke(0)
+            
             glyphStart = time()
+            glyph.setParent(thisFont)
+            
             _drawGlyph(glyph)
             
             if not keepWords:

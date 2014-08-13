@@ -5,9 +5,31 @@ from time import time
 import datetime
 now = datetime.datetime.now().strftime('%d %B %Y - %H:%M')
 
+_UI = True
+
+if _UI:
+    pSizes = ['8','10','12','14','16','18','20','22','24','28','32','36','40','44','48','56','64','72','84','96']
+    trackingValues= [str(v) for v in range(0, 100, 5)]
+    _lineHeightValues = [str(l/10) for l in range(10, 30)]
+    presets = ['A4-P', 'A4-L', 'A3-P', 'A3-L']
+    presetNames = ['A4 Portrait', 'A4 Landscape', 'A3 Portrait', 'A3 Landscape']
+
+    Variable([
+        dict(name="pageSize", ui="PopUpButton", args=dict(items=presetNames)),
+        dict(name="point_size", ui="PopUpButton", args=dict(items=pSizes)),
+        dict(name="_tracking", ui="PopUpButton", args=dict(items=trackingValues)),
+        dict(name="negativeTracking", ui="CheckBox"),
+        dict(name="line_Height", ui="PopUpButton", args=dict(items=_lineHeightValues)),
+        dict(name="useKerning", ui="CheckBox"),
+        dict(name="showKerning", ui="CheckBox"),
+        dict(name="showGlyphBox", ui="CheckBox"),
+        dict(name="GeneratePDF", ui="CheckBox") 
+        ], globals())
+
 ### SETTINGS ####
 
-ufoPath = ""
+ufoPath = u"/Users/loicsander/Documents/20 Pro Work/20 Commissionned/Brochard-Finance/10 ID/20 Brochard typeface/30 ufo/140212_Brochard-Regular_[smcp]-[cap]-[bdc]Kerned 18.ufo"
+#ufoPath = u"/Users/loicsander/Documents/30 Ego Work/0 Letters/0 Faces/Elzevier/30 ufo/1 text/140322_Elz_Text_X_Book 25.ufo"
 
 # (left, top, right, bottom)
 margins = (50, 50, 50, 50)
@@ -23,8 +45,8 @@ PDF = False
 PDFfolder = None
 PDFfileName = None
 
-pointSize = 12
-_line_Height = 1.4
+pointSize = 72
+_line_Height = 1.3
 tracking = 0
 
 # use 3 values if you want RVB
@@ -38,16 +60,18 @@ alpha = 1
 # usual suffix stuff: .small, .alt, etc.
 suffix = []
 
-useKerning = True
-showKerning = False
-showGlyphBox = False
+if not _UI:
+    useKerning = True
+    showKerning = False
+    showGlyphBox = False
 
 useString = True
 text2print = [
 #    (text to print, wrapWords:True/False)
 #    each new list element goes on a new page
-#    (open('foo.txt').read(), True),
-    ('Tart Tool\nATAVISME\nWhatever', True),
+    (open('foo.txt').read(), True),
+#    ('Bon. Tartuffe, reprenons nos affaires. Où en étions-nous?', True),
+#    ('Tart Tool\nATAVISME\nWhatever', True),
     ]
  
 # if useString is set to False and mix is set to True
@@ -63,10 +87,20 @@ glyphLists = [
 # has to be an installed font
 # has to be name by it’s poscript name
 # use installedFonts() to get the full list of installed fonts on your system
-infoFont = ''
+infoFont = 'GemeliMono-Light'
+
+if _UI:
+    preset = presets[pageSize]
+    PDF = GeneratePDF
+    pointSize = int(pSizes[point_size])
+    # _line_Height = 1.4
+    _line_Height = float(_lineHeightValues[line_Height])
+    tracking = int(trackingValues[_tracking])
+    if negativeTracking:
+        tracking = -tracking
 
 #################
-#################
+#################    
 
 def _drawGlyph(thisFont, glyph):
     pen = CocoaPen(thisFont)
@@ -192,14 +226,14 @@ class TypeSetter(object):
             glyphRecord = self.stringToGlyphs(glyphInput)
         elif isinstance(glyphInput, list):
             glyphRecord = glyphInput
-
+            
         suffixes = self.settings['suffix']
         if len(suffixes) > 0:
             for i, glyphName in enumerate(glyphRecord):                  
                 for suffix in suffixes:
                     if glyphName + suffix in fontKeys:
                         glyphRecord[i] = glyphName + suffix
-
+            
         kernGroups = self.getKernGroups(glyphRecord)
         nbrOfGlyphs = len(glyphRecord)
         UPM = thisFont.info.unitsPerEm
@@ -421,7 +455,7 @@ class TypeSetter(object):
             
         print 'average glyph drawing %0.2f ms, total %0.2f ms, %s glyphs drawn' % (glyphDrawingTime/nbrOfGlyphs, glyphDrawingTime, nbrOfGlyphs)
 
-from robofab.world import OpenFont        
+from robofab.world import OpenFont    
 
 thisFont = OpenFont(ufoPath) 
 
