@@ -361,8 +361,7 @@ class TypeSetter(object):
                         restore()
                         
                     if len(glyph.components) > 0:
-                        for component in reversed(glyph.components):
-                            component.decompose()               
+                        glyph = _decompose(glyph)              
                     wordGlyph.appendGlyph(glyph, (wordLetterOffset + kerningValue, 0))
                     wordGlyph.width += (glyph.width + tracking + kerningValue)
                     wordGlyph.name += glyphName
@@ -380,8 +379,7 @@ class TypeSetter(object):
                     if (i == nbrOfGlyphs-1) and (glyphName != '\n'):
                    
                         if len(glyph.components) > 0:
-                            for component in reversed(glyph.components):
-                                component.decompose()
+                            glyph = _decompose(glyph)
                         wordGlyph.appendGlyph(glyph, (wordLetterOffset + kerningValue, 0))
                         wordGlyph.width += (glyph.width + tracking)
                         wordGlyph.name += glyphName
