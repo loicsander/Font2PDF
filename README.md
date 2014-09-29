@@ -8,7 +8,7 @@ Here’s a series of scripts that will allow you to generate PDF files directly 
 
 ## makeProof.py
 
-As the name indicates, this script is meant to produce proofing sheets. You can feed text, or glyphs, to the script by two means. Either you provide strings (text), or lists of glyphs.
+As the name indicates, this script is meant to produce proofing sheets. You can feed text or glyphs to the script by two means: either you provide strings (text), or lists of glyphs.
 
 ```python
 # strings
@@ -25,8 +25,8 @@ glyphLists = [
 ```
 
 #### Strings
-If you provide strings (even if only one), you should put them in a list. Each item in the list is an indication that you want this text set on a separate page.
-For each defined string, you must also define a boolean in the form of a tuple —> ('abc123', True). This boolean determines if words are to be wrapped or if text is broken in lines anywhere (not respect for words).
+If you provide strings (even a single one), you should put them in a list. Each item in the list is an indication that you want each text input set on a separate page.
+For each defined string, you must associate a boolean in the form of a tuple —> ('abc123', True). This boolean determines if words are to be wrapped or if lines are broken anywhere with no regard for words coherence.
 Working with strings makes it easy to import text, which you can do through a separate text file.
 
 if strings or lists are used is determined by:
@@ -36,7 +36,7 @@ useString = True # or False
 ```
 
 #### Lists
-If you work with lists (which will allow you to use specific glyph names), the same happens. Each item of the list is set on a separate page, except if the mix variable is set to True. In that case, all lists are mixed to produce a typical spacing sheet (abacadaeafaga…) . You should be mindful of the size and number of your lists if you intend to mix them; otherwise it could take a little while…
+If you work with lists (which will allow you to use specific glyph names), same happens. Each item of the list is set on a separate page, except if the *mix* variable is set to True. In that case, all lists are mixed to produce a typical spacing sheet (abacadaeafaga…) . You should be mindful of the size and number of your lists if you intend to mix them; or it might take a while to process (nested loops, all that)…
 
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-9.png)
 ![alt tag](http://www.akalollip.com/images/github/font2pdf/makeProofingSheets-4.png)
@@ -56,7 +56,7 @@ preset = 'A4-P'
 showFrame = False
 footer = True
 ```
-There are presets to defined size and orientation of the page. By default, I added A4 & A3 as base formats, but you can add yours yourself (see .formats in the TypeSetter class). For each format, you can chose between portrait or landscape orientation (A4-P or A4-L). You also have control over the size of margins and if you want a footer applied to the pages (displaying the name of the typeface + style, name of the ufo file and date.
+There are presets to define size and orientation of the page. By default, I added A4 & A3 as base formats, but you can add yours yourself (see .formats in the TypeSetter class). For each format, you can chose between portrait or landscape orientation (A4-P or A4-L). You also have control over the size of margins and if you want a footer applied to the pages (displaying the name of the typeface + style, name of the ufo file and date.
 
 ##### Page output
 ```python
@@ -64,7 +64,7 @@ PDF = True
 PDFfolder = '/myFolder/'
 PDFfileName = 'myFile'
 ```
-If you set the PDF variable to True, the script issues a PDF file with a name identical to the source ufo file,  and a _PROOF suffix. Except if you specify the filename you wish. You can also specify a target folder which by default is the same as the ufo.
+If you set the PDF variable to True, the script issues a PDF file with a name identical to the source ufo file,  and a _PROOF suffix. Except if you specify the filename you wish instead. You can also specify a target folder which by default is the same as the ufo’s.
 
 ##### Type
 ```python
@@ -95,13 +95,13 @@ These variable names are quite straightforward I think. showGlyphBox displays th
 ```python
 infoFont = ''
 ```
-Here you can define the name of a font for the footer information. The name has to be a postscript name, you can get the full list of installed fonts with the installedFonts() function of DrawBot (it provides you with the names you have to use so that DrawBot use the proper font).
+Here you can define the name of a font for the footer information. The name has to be a postscript name, you can get the full list of installed fonts with the installedFonts() function of DrawBot (it provides you with the names you have to use so that DrawBot uses the proper font).
 
 ## compare-glyphs.py
 
 This script takes in all given fonts (either a list of paths to UFO files in DrawBot or takes all open fonts in Robofont) and makes a PDF file showing each glyph for all fonts side by side. It does a similar job to Ondrej Jób’s great [Font Inspector](http://urtd.net/projects/fontinspector/), only the output isn’t HTML but PDF and it’s not interactive. 
 
-It takes it’s character set reference from the first font it can find. Typically, this is intended for master comparison in an interpolation scheme. Let’s say it’s the use case in which you’ll have no surprises (same family name & same number of characters in all fonts).
+It takes its character set reference from the first font it can find. Typically, this is intended for master comparison in an interpolation scheme. Let’s say it’s the use case in which you’ll have no surprises (same family name & same number of characters in all fonts).
 
 The script takes the first found font’s glyphOrder as a reference character set. But you can override it by defining your own list  (see userGlyphKeys variable, line 40/36)
 
